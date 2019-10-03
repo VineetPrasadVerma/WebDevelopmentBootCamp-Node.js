@@ -2,12 +2,14 @@ var express    = require("express"),
 	app        = express(),
 	bodyParser = require("body-parser"),
 	mongoose   = require("mongoose"),
-	methodOverride = require("method-override");
+	methodOverride = require("method-override"),
+	expressSanitizer = require("express-sanitizer");
 
 mongoose.connect("mongodb://localhost/restful_blog_app", {useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false});
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(expressSanitizer());
 app.use(methodOverride("_method"));
 
 var blogSchema = new mongoose.Schema({
@@ -41,6 +43,7 @@ app.get("/blogs/new", (req, res) => {
 
 //CREATE ROUTE
 app.post("/blogs", (req, res) => {
+	req.body.blog.body = req.sanitize(req.body.blog.body);
 	Blog.create(req.body.blog, (err, newBlog) => {
 		if(err){
 			console.log(err);
@@ -74,7 +77,8 @@ app.get("/blogs/:id/edit", (req, res) => {
 
 //UPDATE ROUTE
 app.put("/blogs/:id", (req, res) =>{
-	Blog.findOneAndUpdate(req.params.id, req.body.blog, (err, updatedBlog) => {
+	req.body.blog.body = req.sanitize(req.body.blog.body);
+	Blog.findByIdAndUpdate(req.params.id, req.body.blog, (err, updatedBlog) => {
 		if(err){
 			res.redirect("/blogs");
 		}else{
@@ -85,7 +89,7 @@ app.put("/blogs/:id", (req, res) =>{
 
 //DELETE ROUTE
 app.delete("/blogs/:id", (req, res) => {
-	Blog.findOneAndDelete(req.params.id, (err) => {
+	Blog.findByIdAndDelete(req.params.id, (err) => {
 		if(err){
 			res.redirect("/blogs");
 		}else{

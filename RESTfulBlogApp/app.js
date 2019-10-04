@@ -78,7 +78,7 @@ app.get("/blogs/:id/edit", (req, res) => {
 //UPDATE ROUTE
 app.put("/blogs/:id", (req, res) =>{
 	req.body.blog.body = req.sanitize(req.body.blog.body);
-	Blog.findByIdAndUpdate(req.params.id, req.body.blog, (err, updatedBlog) => {
+	Blog.findOneAndUpdate({_id: req.params.id}, req.body.blog, (err, updatedBlog) => {
 		if(err){
 			res.redirect("/blogs");
 		}else{

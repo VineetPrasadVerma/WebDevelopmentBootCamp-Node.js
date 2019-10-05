@@ -101,4 +101,9 @@ app.delete("/blogs/:id", (req, res) => {
 app.listen(3000, () => {
 	console.log("Blog server has started");
 });
+
+
+// { "_id" : ObjectId("5d9705c076e59801cab33fd1") }
+// { "_id" : ObjectId("5d97067376e59801cab33fd2") }
+// { "_id" : ObjectId("5d97105e0e9fc008bc91dafd") }
    

@@ -78,7 +78,7 @@ app.get("/blogs/:id/edit", (req, res) => {
 //UPDATE ROUTE
 app.put("/blogs/:id", (req, res) =>{
 	req.body.blog.body = req.sanitize(req.body.blog.body);
-	Blog.findByIdAndUpdate(req.params.id, req.body.blog, (err, updatedBlog) => {
+	Blog.findOneAndUpdate({_id: req.params.id}, req.body.blog, (err, updatedBlog) => {
 		if(err){
 			res.redirect("/blogs");
 		}else{
@@ -102,8 +102,3 @@ app.listen(3000, () => {
 	console.log("Blog server has started");
 });
 
-
-// { "_id" : ObjectId("5d9705c076e59801cab33fd1") }
-// { "_id" : ObjectId("5d97067376e59801cab33fd2") }
-// { "_id" : ObjectId("5d97105e0e9fc008bc91dafd") }
-   

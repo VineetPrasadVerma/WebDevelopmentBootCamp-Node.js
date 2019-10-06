@@ -5,10 +5,10 @@ var express = require("express"),
  Campground = require("./models/campground"),
  	 seedDB = require("./seeds.js");
 
-seedDB();
 mongoose.connect("mongodb://localhost/yelp_camp_v3", {useUnifiedTopology: true, useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+seedDB();
 
 // Campground.create(
 // 	{
@@ -65,7 +65,7 @@ app.get("/campgrounds/new", (req, res) => {
 
 //SHOW ROUTE- show desc about particular campground
 app.get("/campgrounds/:id", (req, res) => {
-	Campground.findById(req.params.id, (err, foundCampground) => {
+	Campground.findById(req.params.id).populate("comments").exec((err, foundCampground) => {
 		if(err){
 			console.log(err);
 		}else{

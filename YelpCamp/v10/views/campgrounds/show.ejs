@@ -41,12 +41,14 @@
 						<span>
 							<%=comment.text%>					
 						</span>
-						<a  href="/campgrounds/<%=campground._id%>/comments/<%= comment._id%>/edit">
-								<i class="edit outline icon"></i>
-						</a>
-						<form id="del-comment"  action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?														_method=DELETE" method="POST">
-							<button id="del-button" class="btn btn-xs"><i class="trash alternate outline icon"></i></button>
-						</form>	
+						<% if(currentUser && comment.author.id.equals(currentUser._id)) { %>
+							<a  href="/campgrounds/<%=campground._id%>/comments/<%= comment._id%>/edit">
+									<i class="edit outline icon"></i>
+							</a>
+							<form id="del-comment"  action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?														_method=DELETE" method="POST">
+								<button id="del-button" class="btn btn-xs"><i class="trash alternate outline icon"></i></button>
+							</form>	
+						<% } %>
 						<hr>
 					</div>
 				</div>

@@ -53,13 +53,22 @@ router.get("/:id", (req, res) => {
 
 //EDIT ROUTE
 router.get("/:id/edit", (req, res) => {
-	Campground.findById(req.params.id, (err, foundCampground) => {
-		if(err){
-			res.redirect("/campgrounds");
-		}else{
-			res.render("campgrounds/edit", {campground: foundCampground});
-		}
-	});
+	if(req.isAuthenticated()){
+		Campground.findById(req.params.id, (err, foundCampground) => {
+			if(err){
+				res.redirect("/campgrounds");
+			}else{
+				if(foundCampground.author._id.equals(req.user._id)){
+					res.render("campgrounds/edit", {campground: foundCampground});
+				}else{
+					res.send("YOU DONT HAVE PERMISSION TO DO THAT !");
+				}
+			}
+		});
+	}else{
+		res.send("LOG IN PLEASE");
+	}
+	
 });
 
 //UPDATE ROUTE 
@@ -69,6 +78,17 @@ router.put("/:id", (req, res)=> {
 			res.redirect("/campgrounds");
 		}else{
 			res.redirect("/campgrounds/"+req.params.id);
+		}
+	});
+});
+
+//DESTROY ROUTE
+router.delete("/:id", (req, res) => {
+	Campground.findByIdAndRemove(req.params.id, (err) => {
+		if(err){
+			res.redirect("/campgrounds");
+		}else{
+			res.redirect("/campgrounds");
 		}
 	});
 });

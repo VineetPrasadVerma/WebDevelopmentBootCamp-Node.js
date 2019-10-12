@@ -23,7 +23,7 @@ router.post("/", isLoggedIn, (req, res) => {
 		}else{
 			Comment.create(req.body.comment, (err, comment) => {
 				if(err){
-					console.log(err);
+					console.log(err); 
 				}else{
 					comment.author.id = req.user._id;
 					comment.author.username = req.user.username;
@@ -37,6 +37,41 @@ router.post("/", isLoggedIn, (req, res) => {
 		}
 	});
 });
+
+//edit route
+router.get("/:comment_id/edit", (req, res) => {
+	Comment.findById(req.params.comment_id, (err, foundComment)=> {
+		if(err){
+			res.redirect("back");
+		}else{
+			res.render("comments/edit", {campground_id: req.params.id, comment: foundComment});
+		}
+	});
+});
+
+//Update route
+router.put("/:comment_id", (req, res) => {
+	Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, (err, updatedComment) => {
+		if(err){
+			res.redirect("back");
+		}else{
+			res.redirect("/campgrounds/"+req.params.id);
+		}
+	});
+});
+
+//Delete Route
+router.delete("/:comment_id", (req, res) => {
+	Comment.findByIdAndRemove(req.params.comment_id, (err) =>{
+		if(err){
+			res.redirect("/campgrounds");
+		}else{
+			res.redirect("/campgrounds/"+req.params.id);
+		}
+	});
+});
+	
+
 
 //middleware
 function isLoggedIn(req, res, next){

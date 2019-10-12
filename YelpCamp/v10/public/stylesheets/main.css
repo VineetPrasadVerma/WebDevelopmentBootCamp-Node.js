@@ -6,6 +6,23 @@
 	padding: 0;
 }
 
-#delete-from{
+#delete-form{
 	display: inline;
+}
+
+#del-comment{
+	display: inline;
+}
+
+#del-button{
+	background-color: Transparent;
+}
+
+.edit{
+	padding-left: 8px;
+	color: blue;
+}
+
+.trash{
+	color:red;
 }

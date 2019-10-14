@@ -32,6 +32,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 			req.flash("error", "Oops! Something went wrong. Please try again !!");
 			console.log(err);
 		}else{
+			req.flash("Campground added successfully !");
 			res.redirect("/campgrounds");
 		}
 	});

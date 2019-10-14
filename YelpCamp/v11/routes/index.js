@@ -23,7 +23,7 @@ router.post("/register", (req, res) => {
 			return res.redirect("/register");
 		}
 		passport.authenticate("local")(req, res, () => {
-			req.flash("success", "Welcome to YelpCamp" + user.username);
+			req.flash("success", "Welcome to YelpCamp " + user.username);
 			res.redirect("/campgrounds");
 		});
 	});
@@ -35,10 +35,11 @@ router.get("/login", (req, res) => {
 });
 
 //HANDLE USER LOGIN
-router.post("/login", passport.authenticate("local", { successRedirect: "/campgrounds", failureRedirect: "/login"}),
-			(req, res) => {
-			req.flash("Hello " +req.body.username + " Welcome!!");
-});
+router.post("/login", passport.authenticate("local", 
+		{	successRedirect: "/campgrounds", successFlash:  "Hey! Welcome Back",
+			failureRedirect: "/login", failureFlash: "Invalid username or password."	
+		}), (req, res) => {
+		});
 
 //LOGOUT ROUTE
 router.get("/logout", (req, res) => {

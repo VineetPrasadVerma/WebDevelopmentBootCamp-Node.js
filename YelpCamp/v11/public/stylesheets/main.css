@@ -18,6 +18,10 @@
 	background-color: Transparent;
 }
 
+#more_info{
+	margin-bottom: 10px;
+}
+
 .edit{
 	padding-left: 8px;
 	color: blue;
